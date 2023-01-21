@@ -1,19 +1,15 @@
 /*
-DHT11
-
-This example reads a DHT11 sensor hooked up on pin D7. Reads both
-temperature and humidity and sends it to the Serial port
-
-created in Feb 2019 by D. Cuartielles
-based on work by F. Vanzati (2011) and M. Loglio (2013)
-
-This example code is in the public domain.
+https://www.futurashop.it/image/catalog/data/Download/LiquidCrystal_I2C1602V1.zip 
+da scaricare!
 */
 
-// include the EduIntro library
+// include the libraries
 #include <EduIntro.h>
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
 
 DHT11 dht11(D7);  // creating the object sensor on pin 'D7'
+LiquidCrystal_I2C lcd(0x3F,16,2); // 0x3F = 63 // usa 0x27 se non va
 
 int temp_read;   // temperature C readings are integers
 int umidita_read;   // humidity readings are integers
@@ -30,11 +26,16 @@ void setup()
   // initialize serial communications at 9600 bps
   Serial.begin(9600);
   pinMode(LED_EXT, OUTPUT);
-
+  
+  lcd.init();                      // initialize the lcd 
+  lcd.backlight();
+  lcd.print("si sta accendendo");
 }
 
 void loop()
 {
+  char buffer[2][17] = {"",""};
+  
   dht11.update();
   
   temp_read = dht11.readCelsius();     	// Reading the temperature in Celsius degrees and store in the C variable
@@ -46,7 +47,13 @@ void loop()
   }else{
     digitalWrite(LED_EXT, LOW);
   }
-
+  snprintf(buffer[0], 16,"%03i C, H:%02i%/0", temp_red, umidita_read); 
+  snprintf(buffer[1], 16,"Luce : %05i/0", fotoresist); 
+  
+  lcd.print( buffer[0] ); 
+  lcd.setCursor(0, 1);
+  lcd.print()
+  
   // Print the collected data in a row on the Serial Monitor
   Serial.print("luce: ");
   Serial.print(fotoresist);
