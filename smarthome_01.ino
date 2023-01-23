@@ -9,13 +9,13 @@ da scaricare!
 #include <LiquidCrystal_I2C.h>
 
 DHT11 dht11(D7);  // creating the object sensor on pin 'D7'
-LiquidCrystal_I2C lcd(0x3F,16,2); // 0x3F = 63 // usa 0x27 se non va
+LiquidCrystal_I2C lcd(0x27,16,2); // 0x3F = 63 // usa 0x27 se non va
 
 int temp_read;   // temperature C readings are integers
 int umidita_read;   // humidity readings are integers
 int fotoresist;
 
-int const fotopin = A5;
+int const fotopin = A0;
 int const LED_EXT = D4;
 
 // config
@@ -29,7 +29,7 @@ void setup()
   
   lcd.init();                      // initialize the lcd 
   lcd.backlight();
-  lcd.print("si sta accendendo");
+  //lcd.print("si sta accendendo");
 }
 
 void loop()
@@ -47,12 +47,12 @@ void loop()
   }else{
     digitalWrite(LED_EXT, LOW);
   }
-  snprintf(buffer[0], 16,"%03i C, H:%02i%/0", temp_red, umidita_read); 
-  snprintf(buffer[1], 16,"Luce : %05i/0", fotoresist); 
-  
+  snprintf(buffer[0], 16,"%03i C, H:%02i% \0", temp_read, umidita_read); 
+  snprintf(buffer[1], 16,"Luce : %05i \0", fotoresist); 
+  lcd.setCursor(0, 0);
   lcd.print( buffer[0] ); 
   lcd.setCursor(0, 1);
-  lcd.print()
+  lcd.print( buffer[1] );
   
   // Print the collected data in a row on the Serial Monitor
   Serial.print("luce: ");
