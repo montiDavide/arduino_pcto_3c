@@ -100,15 +100,15 @@ void loop()
   dist_cm = getDist_cm();
 
   // Print the collected data in a row on the Serial Monitor
-  Serial.print("luce: ");
-  Serial.print(fotoresist);
+  //Serial.print("luce: ");
+  //Serial.print(fotoresist);
   
-  Serial.print("\n\nH: ");
-  Serial.print(umidita_read);
-  Serial.print("\tC: ");
-  Serial.println(temp_read);
+  //Serial.print("\n\nH: ");
+  //Serial.print(umidita_read);
+  //Serial.print("\tC: ");
+  //Serial.println(temp_read);
 
-  Serial.println(dist_cm);
+  //Serial.println(dist_cm);
   
   //Serial.print("button:");
   //Serial.println(analogRead(TASTO_GARAGE));
@@ -172,7 +172,7 @@ void openGarage() {
 void closeGarage(){
   for(int i=180;i>GARAGE_STATE.CLOSE;i--){
       Garage.write(i);
-      delay(20);         
+      delay(25);         
     }
     garage=false;
     Serial.println("close");
@@ -195,6 +195,11 @@ void manageGarage(float dist_cm){
   } */
   
   if ( analogRead(TASTO_GARAGE) > 300 ){
+      
+    if (garage){
+      closeGarage();
+    }
+
     return;
   }
 
@@ -204,7 +209,7 @@ void manageGarage(float dist_cm){
       garagedelay=0; 
     }
   }else{
-    if( garagedelay==tempo_garage && garage){
+    if( garagedelay>=tempo_garage && garage){
         closeGarage();      
     }
   }
