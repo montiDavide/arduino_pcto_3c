@@ -116,7 +116,7 @@ void loop()
 
   // prepara buffer
   snprintf(buffer[0], 16,"C %03i, H:%02i \0", temp_read, umidita_read); 
-  snprintf(buffer[1], 16,"Luce : %05i \0", fotoresist);
+  snprintf(buffer[1], 16,"Luce : %03i \0", fotoresist);
   
   //svuota schermo
   lcd.clear();
@@ -167,6 +167,7 @@ void openGarage() {
       delay(25);         
     }
     garage=true; 
+    Serial.println("open");
 }
 void closeGarage(){
   for(int i=180;i>GARAGE_STATE.CLOSE;i--){
@@ -174,6 +175,7 @@ void closeGarage(){
       delay(20);         
     }
     garage=false;
+    Serial.println("close");
 }
 // apri/chiudi garage
 void manageGarage(float dist_cm){
@@ -191,7 +193,7 @@ void manageGarage(float dist_cm){
           closeGarage();   
       }
   } */
-
+  
   if ( analogRead(TASTO_GARAGE) > 300 ){
     return;
   }
